@@ -1,7 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
-	
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.indonumero.IndoNumeroController">
-	<!-- TODO Add Nodes -->
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="it.polito.tdp.indonumero.IndoNumeroController">
+   <top>
+      <Label text="Indovina il Numero" BorderPane.alignment="CENTER" />
+   </top>
+   <center>
+      <VBox spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox spacing="5.0">
+               <children>
+                  <Button fx:id="btnNuovaPartita" mnemonicParsing="false" onAction="#handleNuovaPartita" text="Nuova Partita" />
+                  <Label text="Tentativi" />
+                  <TextField fx:id="txtCurrent" />
+                  <Label text="/" />
+                  <TextField fx:id="txtMax" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox fx:id="boxPartita" disable="true" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Tentativo" />
+                  <TextField fx:id="txtTentativo" />
+                  <Button fx:id="btnProva" mnemonicParsing="false" onAction="#handleProva" text="Prova" />
+               </children>
+            </HBox>
+            <TextArea fx:id="txtLog" prefHeight="200.0" prefWidth="200.0" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </center>
 </BorderPane>
