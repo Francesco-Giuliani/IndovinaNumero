@@ -7,14 +7,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 
-public class IndoNumeroController {
-	private static int NMAX = 100;
-	private static int TMAX = 7;
+public class IndoNumeroController {//Dato che non creo io il Controller non posso mettere il modello nel costruttore
 	
-	private int segreto; //numero da indovinare
-	private int tentativi; // tentativi già fatti
-	
-	private boolean inGame = false; //se false in game e tentativi non esistono
+	private Model model;
 	
     @FXML
     private HBox boxPartita;
@@ -39,15 +34,17 @@ public class IndoNumeroController {
 
     @FXML
     void handleNuovaPartita(ActionEvent event) {
-    	this.segreto = (int)Math.random()*NMAX + 1;
     	
-    	tentativi = 0;
-    	inGame = true;
+    	model.newGame();
     	
     	btnNuovaPartita.setDisable(true);
     	boxPartita.setDisable(false);
-    	txtCurrent.setText(String.format("%d", this.tentativi));
-    	txtMax.setText(String.format("%d", this.TMAX));
+    	txtCurrent.setText(String.format("%d", this.model.getTentativi()));
+    	txtMax.setText(String.format("%d", this.model.getNMAX()));
+    	txtLog.clear();
+    	txtTentativo.clear();
+    	
+    	//txtLog.setText(String.format(format, args));
     }
 
     @FXML
@@ -59,11 +56,43 @@ public class IndoNumeroController {
     		return;
     		}
     	try {
-    	int num = Integer.parseInt(numS);	
+    	int num = Integer.parseInt(numS);
+    	if(!model.voloretentativoValido(num)) {
+    		txtLog.appendText("Valore fuori dall'intervallo consentito.\n");
+    		return;
+    	}
+    	int risultato = model.tentativo(num);
+    	
+    	if(risultato == 0) {
+    		txtLog.appendText("Hai Vinto!\n");
+    	}
+    	else if(risultato < 0)
+    		txtLog.appendText("Troppo basso\n");
+    	else
+    		txtLog.appendText("Troppo alto\n");
+    	
+    	if(!model.isInGame()) {
+    		if(risultato!=0) {
+    			txtLog.appendText("Hai perso.\nIn numero segreto era: "+model.getSegreto()+"\n");
+    		}
+    		txtLog.appendText("Partita terminata\n");
+    		this.btnNuovaPartita.setDisable(false);
+    		this.boxPartita.setDisable(true);
+    	}
+    	
     	}catch(NumberFormatException nfe) {
     		txtLog.appendText("il dato inserito non è numerico");
     		return;
     	}
     }
+
+	public Model getModel() {
+		return model;
+	}
+
+	public void setModel(Model model2) {
+		this.model=model2;		
+	}
+    
 
 }
